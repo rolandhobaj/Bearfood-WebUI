@@ -15,6 +15,10 @@ const router = createBrowserRouter([
     path: "/register",
     element: <RegisterForm/>
   },
+  {
+    path: "/dashboard",
+    element: <h1>Welcome to dashboard</h1>
+  },
 ]);
 
 function App() {

@@ -8,8 +8,10 @@ import exampleImage from '../assets/icon.png'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm(){
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = React.useState(false);
     const [password, setPassword] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -29,7 +31,11 @@ function LoginForm(){
       body: JSON.stringify({ email: email, password: password }),
     })
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => {
+        if (data.accessToken != null) {
+          navigate("/dashboard")
+        } 
+      })
       .catch(error => alert(error));
   }
 
