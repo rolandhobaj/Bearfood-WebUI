@@ -1,4 +1,5 @@
 import React from 'react';
+import {Errors} from './Errors'
 import { Box, Card, TextField, Button,
     Stack, FormControl, InputLabel,
     OutlinedInput, InputAdornment, IconButton } from '@mui/material';
@@ -7,12 +8,14 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Close from '@mui/icons-material/Close';
+import Done from '@mui/icons-material/Done';
 
 function RegisterForm() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
 
-    const [error, setError] = React.useState<string>('');
+    const [errors, setErrors] = React.useState<Errors[]>([Errors.ToShort]);
 
     const [password, setPassword] = React.useState<string>('');
 
@@ -24,17 +27,14 @@ function RegisterForm() {
     };
 
     const validatePassword = (pwd : string) => {
-        if (pwd.length == 0){
-            setError('');
-            return;
-        }
-        
-        if (pwd.length < 8) {
-            setError('Password must be at least 8 characters long.');
+        if (pwd.length <= 8) {
+            errors.push(Errors.ToShort)
+            setErrors([...errors]);
+            console.log(errors);
             return;
           }
         
-        setError('');
+        setErrors([]);
     }
 
     return (
@@ -104,7 +104,11 @@ function RegisterForm() {
                 </FormControl>
             </Stack>
         
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <Stack direction="row" sx={stackStyle}>
+                {errors.includes(Errors.ToShort) ? <Close sx={{ color: 'red' }}/> : <Done sx={{ color: 'green' }}/> } 
+                <p>Password: atleast 8 characters</p>
+            </Stack>
+
             <Button sx={buttonStyle} variant="contained">Register</Button>
         </Card>
         </Box>
