@@ -7,6 +7,7 @@ import { Box, FormControl } from '@mui/material';
 import exampleImage from '../assets/icon.png'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { Link } from 'react-router-dom';
 
 function LoginForm(){
     const [showPassword, setShowPassword] = React.useState(false);
@@ -45,7 +46,7 @@ function LoginForm(){
              />
             </FormControl>
             <Button sx={buttonStyle} variant="contained">Login</Button>
-            <p> Not a member yet? Sign up here!</p>
+            <Link style={{margin: 10}} to="/register">Not a member yet? Sign up here! </Link>
         </Stack>
         </Card>
         </Box>
