@@ -10,6 +10,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Close from '@mui/icons-material/Close';
 import Done from '@mui/icons-material/Done';
+import { Link } from 'react-router-dom';
 
 function RegisterForm() {
     const [showPassword, setShowPassword] = React.useState(false);
@@ -152,7 +153,14 @@ function RegisterForm() {
                 <div>Passwords should match.</div>
             </Stack>
 
-            <Button sx={buttonStyle} variant="contained">Register</Button>
+            <Stack direction="row" sx={stackForButtonsStyle} spacing={2} >
+                <Link to="/">
+                    <Button variant="contained">Back</Button>
+                </Link>
+                <Link to="/">
+                    <Button color="success" variant="contained" disabled={errors.length !== 0}>Sign up</Button>
+                </Link>
+            </Stack>
         </Card>
         </Box>
     )
@@ -165,13 +173,20 @@ const textFieldStyles = {
 
 const buttonStyle = {
     'margin-top': '30px',
-    'background-color': 'rgba(131,165,173, 1)'
 };
+
 
 const stackStyle ={
     alignItems: 'center',
     justifyContent: 'left',
     width: '80%'
+}
+
+const stackForButtonsStyle ={
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    'margin-top': '20px'
 }
 
 const cardStyle = {

@@ -58,8 +58,7 @@ const textFieldStyles = {
 };
 
 const buttonStyle = {
-    'margin-top': '30px',
-    'background-color': 'rgba(131,165,173, 1)'
+    'margin-top': '30px'
 };
 
 const cardStyle = {
