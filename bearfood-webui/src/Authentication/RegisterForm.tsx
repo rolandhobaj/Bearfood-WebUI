@@ -12,12 +12,30 @@ function RegisterForm() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
 
+    const [error, setError] = React.useState<string>('');
+
+    const [password, setPassword] = React.useState<string>('');
+
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleClickShowPasswordConfirm = () => setShowPasswordConfirm((show) => !show);
   
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
     };
+
+    const validatePassword = (pwd : string) => {
+        if (pwd.length == 0){
+            setError('');
+            return;
+        }
+        
+        if (pwd.length < 8) {
+            setError('Password must be at least 8 characters long.');
+            return;
+          }
+        
+        setError('');
+    }
 
     return (
         <Box sx={boxStyle}>
@@ -53,6 +71,11 @@ function RegisterForm() {
                          </InputAdornment>
                        }
                        label="Password"
+                       value={password}
+                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setPassword(event.target.value);
+                        validatePassword(event.target.value);
+                      }}
                      />
                 </FormControl>
             </Stack>
@@ -81,6 +104,7 @@ function RegisterForm() {
                 </FormControl>
             </Stack>
         
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <Button sx={buttonStyle} variant="contained">Register</Button>
         </Card>
         </Box>
