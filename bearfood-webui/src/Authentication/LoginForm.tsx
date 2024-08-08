@@ -11,6 +11,8 @@ import { Link } from 'react-router-dom';
 
 function LoginForm(){
     const [showPassword, setShowPassword] = React.useState(false);
+    const [password, setPassword] = React.useState("");
+    const [email, setEmail] = React.useState("");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -18,13 +20,28 @@ function LoginForm(){
     event.preventDefault();
   };
 
+  const login = () => {
+    fetch('http://localhost:5025/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: email, password: password }),
+    })
+      .then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => alert(error));
+  }
+
     return (
         <Box sx={boxStyle}>
         <Card sx={cardStyle}>
         <img src={exampleImage} alt="Example" width='180' height='auto'/>
 
         <Stack>
-            <TextField className='TextField' id="outlined-basic" label="Username" required variant="outlined" sx={textFieldStyles} />
+            <TextField className='TextField' id="outlined-basic" label="Email" required variant="outlined" sx={textFieldStyles}
+              value={email}
+               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setEmail(event.target.value)}/>
             <FormControl sx={textFieldStyles} variant="outlined">
              <InputLabel htmlFor="outlined-adornment-password">Password *</InputLabel>
              <OutlinedInput
@@ -43,9 +60,11 @@ function LoginForm(){
                  </InputAdornment>
                }
                label="Password"
+               value={password}
+               onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
              />
             </FormControl>
-            <Button sx={buttonStyle} variant="contained">Login</Button>
+            <Button sx={buttonStyle} variant="contained" onClick={login}>Login</Button>
             <Link style={{margin: 10}} to="/register">Not a member yet? Sign up here! </Link>
         </Stack>
         </Card>
