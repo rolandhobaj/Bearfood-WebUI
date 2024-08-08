@@ -15,9 +15,10 @@ function RegisterForm() {
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
 
-    const [errors, setErrors] = React.useState<Errors[]>([Errors.ToShort]);
+    const [errors, setErrors] = React.useState<Errors[]>([Errors.ToShort, Errors.DoesNotMatch, Errors.NotComplex, Errors.NoSpecialChar]);
 
     const [password, setPassword] = React.useState<string>('');
+    const [passwordConfirm, setPasswordConfirm] = React.useState<string>('');
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const handleClickShowPasswordConfirm = () => setShowPasswordConfirm((show) => !show);
@@ -26,15 +27,37 @@ function RegisterForm() {
       event.preventDefault();
     };
 
-    const validatePassword = (pwd : string) => {
+    const validatePassword = (pwd : string, confPwd: string) => {
+        var newErrors = errors;
         if (pwd.length <= 8) {
-            errors.push(Errors.ToShort)
-            setErrors([...errors]);
-            console.log(errors);
-            return;
-          }
+            newErrors.push(Errors.ToShort)
+        } else {
+            newErrors = newErrors.filter(e => e !== Errors.ToShort);
+        }
+
+        if (pwd !== confPwd){
+            newErrors.push(Errors.DoesNotMatch)
+        } else {
+            newErrors = newErrors.filter(e => e !== Errors.DoesNotMatch);
+        }
         
-        setErrors([]);
+        const hasCapital = /[A-Z]/.test(pwd);
+        const hasNumber = /\d/.test(pwd);
+        if (!hasCapital || ! hasNumber){
+            newErrors.push(Errors.NotComplex)
+        } else {
+            newErrors = newErrors.filter(e => e !== Errors.NotComplex);
+        }
+
+        const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+        if (!hasSpecial){
+            newErrors.push(Errors.NoSpecialChar)
+        } else {
+            newErrors = newErrors.filter(e => e !== Errors.NoSpecialChar);
+        }
+
+
+        setErrors(newErrors);
     }
 
     return (
@@ -74,7 +97,7 @@ function RegisterForm() {
                        value={password}
                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                         setPassword(event.target.value);
-                        validatePassword(event.target.value);
+                        validatePassword(event.target.value, passwordConfirm);
                       }}
                      />
                 </FormControl>
@@ -100,13 +123,33 @@ function RegisterForm() {
                          </InputAdornment>
                        }
                        label="PasswordConfirm"
+                       value={passwordConfirm}
+                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setPasswordConfirm(event.target.value);
+                        validatePassword(password, event.target.value);
+                      }}
                      />
                 </FormControl>
             </Stack>
         
             <Stack direction="row" sx={stackStyle}>
                 {errors.includes(Errors.ToShort) ? <Close sx={{ color: 'red' }}/> : <Done sx={{ color: 'green' }}/> } 
-                <p>Password: atleast 8 characters</p>
+                <div>Password shoud have atleast 8 characters</div>
+            </Stack>
+
+            <Stack direction="row" sx={stackStyle}>
+                {errors.includes(Errors.NotComplex) ? <Close sx={{ color: 'red' }}/> : <Done sx={{ color: 'green' }}/> } 
+                <div>Password should contain a capital, number.</div>
+            </Stack>
+
+            <Stack direction="row" sx={stackStyle}>
+                {errors.includes(Errors.NoSpecialChar) ? <Close sx={{ color: 'red' }}/> : <Done sx={{ color: 'green' }}/> } 
+                <div>Password should contain a special character.</div>
+            </Stack>
+
+            <Stack direction="row" sx={stackStyle}>
+                {errors.includes(Errors.DoesNotMatch) ? <Close sx={{ color: 'red' }}/> : <Done sx={{ color: 'green' }}/> } 
+                <div>Passwords should match.</div>
             </Stack>
 
             <Button sx={buttonStyle} variant="contained">Register</Button>
@@ -127,7 +170,7 @@ const buttonStyle = {
 
 const stackStyle ={
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'left',
     width: '80%'
 }
 

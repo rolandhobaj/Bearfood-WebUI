@@ -1,4 +1,6 @@
 export enum Errors {
     ToShort,
-    DoesNotMatch
+    DoesNotMatch,
+    NotComplex,
+    NoSpecialChar,
   }
