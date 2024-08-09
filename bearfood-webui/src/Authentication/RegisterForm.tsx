@@ -11,10 +11,15 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Close from '@mui/icons-material/Close';
 import Done from '@mui/icons-material/Done';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 function RegisterForm() {
+    const navigate = useNavigate();
+
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
+    const [email, setEmail] = React.useState("");
 
     const [errors, setErrors] = React.useState<Errors[]>([Errors.ToShort, Errors.DoesNotMatch, Errors.NotComplex, Errors.NoSpecialChar]);
 
@@ -27,6 +32,21 @@ function RegisterForm() {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
     };
+
+    const register = () => {
+        fetch('http://localhost:5025/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email, password: password }),
+        })
+          .then(_ => {
+              navigate("/")
+          })
+          .catch(error => alert(error));
+      }
+    
 
     const validatePassword = (pwd : string, confPwd: string) => {
         var newErrors = [];
@@ -58,7 +78,11 @@ function RegisterForm() {
             <h2>Welcome!</h2>
             <Stack direction="row" sx={stackStyle}>
                 <PersonIcon/>
-                <TextField className='TextField' id="outlined-basic" label="Full Name" required variant="outlined" sx={textFieldStyles} />
+                <TextField className='TextField' id="outlined-basic" label="Full Name" required variant="outlined" sx={textFieldStyles}
+                value={email}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                 setEmail(event.target.value);
+               }} />
             </Stack>
             
             <Stack direction="row" sx={stackStyle}>
@@ -148,9 +172,7 @@ function RegisterForm() {
                 <Link to="/">
                     <Button variant="contained">Back</Button>
                 </Link>
-                <Link to="/">
-                    <Button color="success" variant="contained" disabled={errors.length !== 0}>Sign up</Button>
-                </Link>
+                <Button color="success" variant="contained" disabled={errors.length !== 0} onClick={register}>Sign up</Button>
             </Stack>
         </Card>
         </Box>
