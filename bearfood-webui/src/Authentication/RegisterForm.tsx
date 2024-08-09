@@ -29,34 +29,25 @@ function RegisterForm() {
     };
 
     const validatePassword = (pwd : string, confPwd: string) => {
-        var newErrors = errors;
+        var newErrors = [];
         if (pwd.length <= 8) {
             newErrors.push(Errors.ToShort)
-        } else {
-            newErrors = newErrors.filter(e => e !== Errors.ToShort);
         }
 
         if (pwd !== confPwd){
             newErrors.push(Errors.DoesNotMatch)
-        } else {
-            newErrors = newErrors.filter(e => e !== Errors.DoesNotMatch);
         }
         
         const hasCapital = /[A-Z]/.test(pwd);
         const hasNumber = /\d/.test(pwd);
         if (!hasCapital || ! hasNumber){
             newErrors.push(Errors.NotComplex)
-        } else {
-            newErrors = newErrors.filter(e => e !== Errors.NotComplex);
         }
 
         const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
         if (!hasSpecial){
             newErrors.push(Errors.NoSpecialChar)
-        } else {
-            newErrors = newErrors.filter(e => e !== Errors.NoSpecialChar);
         }
-
 
         setErrors(newErrors);
     }
