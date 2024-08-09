@@ -15,6 +15,7 @@ function LoginForm(){
     const [showPassword, setShowPassword] = React.useState(false);
     const [password, setPassword] = React.useState("");
     const [email, setEmail] = React.useState("");
+    const [error, setError] = React.useState("");
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -32,9 +33,12 @@ function LoginForm(){
     })
       .then(response => response.json())
       .then(data => {
+        console.log("DATA" + data.status);
         if (data.accessToken != null) {
           navigate("/dashboard")
-        } 
+        } else{
+          setError("Invalid username or password!");
+        }
       })
       .catch(error => alert(error));
   }
@@ -70,6 +74,7 @@ function LoginForm(){
                onChange={(event: React.ChangeEvent<HTMLInputElement>) => setPassword(event.target.value)}
              />
             </FormControl>
+            {error ? <i style={{ color: 'red' }}>{error}</i> : null}
             <Button sx={buttonStyle} variant="contained" onClick={login}>Login</Button>
             <Link style={{margin: 10}} to="/register">Not a member yet? Sign up here! </Link>
         </Stack>
