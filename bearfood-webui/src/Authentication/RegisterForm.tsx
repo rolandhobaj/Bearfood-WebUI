@@ -19,7 +19,8 @@ function RegisterForm() {
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
-    const [email, setEmail] = React.useState("");
+    const [username, setUsername] = React.useState("");
+    const [fullName, setFullName] = React.useState("");
 
     const [errors, setErrors] = React.useState<Errors[]>([Errors.ToShort, Errors.DoesNotMatch, Errors.NotComplex, Errors.NoSpecialChar]);
 
@@ -34,12 +35,12 @@ function RegisterForm() {
     };
 
     const register = () => {
-        fetch('http://localhost:5025/register', {
+        fetch('http://localhost:5025/api/user/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email: email, password: password }),
+          body: JSON.stringify({ username: username, password: password, fullName: fullName }),
         })
           .then(_ => {
               navigate("/")
@@ -79,15 +80,19 @@ function RegisterForm() {
             <Stack direction="row" sx={stackStyle}>
                 <PersonIcon/>
                 <TextField className='TextField' id="outlined-basic" label="Full Name" required variant="outlined" sx={textFieldStyles}
-                value={email}
+                value={fullName}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                 setEmail(event.target.value);
+                 setFullName(event.target.value);
                }} />
             </Stack>
             
             <Stack direction="row" sx={stackStyle}>
                 <EmailIcon/>
-                <TextField className='TextField' id="outlined-basic" label="Email Address" required variant="outlined" sx={textFieldStyles} />
+                <TextField className='TextField' id="outlined-basic" label="Email Address" required variant="outlined" sx={textFieldStyles} 
+                 value={username}
+                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                  setUsername(event.target.value);
+                }}/>
             </Stack>
 
             <Stack direction="row" sx={stackStyle}>

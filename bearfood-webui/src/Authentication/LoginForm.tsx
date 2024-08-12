@@ -24,23 +24,21 @@ function LoginForm(){
   };
 
   const login = () => {
-    fetch('http://localhost:5025/login', {
+    fetch('http://localhost:5025/api/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email: email, password: password }),
+      body: JSON.stringify({ username: email, password: password }),
     })
-      .then(response => response.json())
       .then(data => {
-        console.log("DATA" + data.status);
-        if (data.accessToken != null) {
+        if (data.status == 200) {
           navigate("/dashboard")
         } else{
           setError("Invalid username or password!");
         }
       })
-      .catch(error => alert(error));
+      .catch(error => console.log(error));
   }
 
     return (
