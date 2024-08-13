@@ -8,10 +8,10 @@ import exampleImage from '../assets/icon.png'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Context/useAuth';
 
 function LoginForm(){
-    const navigate = useNavigate();
+    const { loginUser } = useAuth();
     const [showPassword, setShowPassword] = React.useState(false);
     const [password, setPassword] = React.useState("");
     const [email, setEmail] = React.useState("");
@@ -23,23 +23,6 @@ function LoginForm(){
     event.preventDefault();
   };
 
-  const login = () => {
-    fetch('http://localhost:5025/api/user/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ username: email, password: password }),
-    })
-      .then(data => {
-        if (data.status == 200) {
-          navigate("/dashboard")
-        } else{
-          setError("Invalid username or password!");
-        }
-      })
-      .catch(error => console.log(error));
-  }
 
     return (
         <Box sx={boxStyle}>
@@ -73,7 +56,9 @@ function LoginForm(){
              />
             </FormControl>
             {error ? <i style={{ color: 'red' }}>{error}</i> : null}
-            <Button sx={buttonStyle} variant="contained" onClick={login}>Login</Button>
+            <Button sx={buttonStyle} variant="contained" onClick={() => loginUser(email, password, () => {
+              setError("Invalid username or password");
+            })}>Login</Button>
             <Link style={{margin: 10}} to="/register">Not a member yet? Sign up here! </Link>
         </Stack>
         </Card>
