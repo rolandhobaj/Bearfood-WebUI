@@ -8,6 +8,7 @@ type UserContextType = {
     token: string | null;
     loginUser: (username: string, password: string, onError: () => void) => void;
     registerUser: (username: string, password: string, fullName : string, onError: () => void) => void;
+    isLoggedIn: () => boolean;
 }
 
 type Props = { children: React.ReactNode };
@@ -55,10 +56,12 @@ export const UserProvider = ({ children }: Props) => {
           }
         });
       }
+
+      const isLoggedIn = () => user !== null;
     
       return (
         <UserContext.Provider
-          value={{ loginUser, registerUser, user, token}}
+          value={{ loginUser, registerUser, user, token, isLoggedIn}}
         >
           {children}
         </UserContext.Provider>

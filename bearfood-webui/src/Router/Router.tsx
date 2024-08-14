@@ -5,6 +5,7 @@ import {
 import RegisterForm from '../Authentication/RegisterForm';
 import App from '../App';
 import Dashboard from '../Dashboard/Dashboard';
+import ProtectedRoute from './ProtectedRoute';
 
 
 export const router = createBrowserRouter([
@@ -14,7 +15,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "", element: <LoginForm /> },
       { path: "register", element: <RegisterForm /> },
-      { path: "dashboard", element: <Dashboard/>}
+      { path: "dashboard", element: <ProtectedRoute> <Dashboard/> </ProtectedRoute>}
     ],
   },
 ]);
