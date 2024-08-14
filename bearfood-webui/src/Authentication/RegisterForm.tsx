@@ -11,16 +11,16 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Close from '@mui/icons-material/Close';
 import Done from '@mui/icons-material/Done';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-
+import { useAuth } from '../Context/useAuth';
 
 function RegisterForm() {
-    const navigate = useNavigate();
+    const { registerUser } = useAuth();
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
     const [username, setUsername] = React.useState("");
     const [fullName, setFullName] = React.useState("");
+    const [error, setError] = React.useState("");
 
     const [errors, setErrors] = React.useState<Errors[]>([Errors.ToShort, Errors.DoesNotMatch, Errors.NotComplex, Errors.NoSpecialChar]);
 
@@ -33,21 +33,6 @@ function RegisterForm() {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.preventDefault();
     };
-
-    const register = () => {
-        fetch('http://localhost:5025/api/user/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username: username, password: password, fullName: fullName }),
-        })
-          .then(_ => {
-              navigate("/")
-          })
-          .catch(error => alert(error));
-      }
-    
 
     const validatePassword = (pwd : string, confPwd: string) => {
         var newErrors = [];
@@ -173,11 +158,13 @@ function RegisterForm() {
                 <div>Passwords should match.</div>
             </Stack>
 
+            {error ? <i style={{ color: 'red' }}>{error}</i> : null}
+
             <Stack direction="row" sx={stackForButtonsStyle} spacing={2} >
                 <Link to="/">
                     <Button variant="contained">Back</Button>
                 </Link>
-                <Button color="success" variant="contained" disabled={errors.length !== 0} onClick={register}>Sign up</Button>
+                <Button color="success" variant="contained" disabled={errors.length !== 0} onClick={() => registerUser(username, password, fullName, () => {setError("Failed to register the user!")})}>Sign up</Button>
             </Stack>
         </Card>
         </Box>
@@ -188,11 +175,6 @@ const textFieldStyles = {
     margin: '5px',
     width: '100%',
 };
-
-const buttonStyle = {
-    'margin-top': '30px',
-};
-
 
 const stackStyle ={
     alignItems: 'center',

@@ -1,12 +1,13 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { UserProfile } from "../Authentication/UserProfile"
 import { useNavigate } from "react-router-dom";
-import { loginAPI } from "../Authentication/Service";
+import { loginAPI, registerAPI } from "../Authentication/Service";
 
 type UserContextType = {
     user: UserProfile | null;
     token: string | null;
     loginUser: (username: string, password: string, onError: () => void) => void;
+    registerUser: (username: string, password: string, fullName : string, onError: () => void) => void;
 }
 
 type Props = { children: React.ReactNode };
@@ -45,10 +46,19 @@ export const UserProvider = ({ children }: Props) => {
           })
           .catch((e) => console.log("warning"));
       };
+
+      const registerUser = async (username: string, password: string, fullName : string, onError: () => void) => {
+        await registerAPI(username, password, fullName, onError)
+        .then((isSuccesfull) => {
+          if (isSuccesfull){
+            navigate("/");
+          }
+        });
+      }
     
       return (
         <UserContext.Provider
-          value={{ loginUser, user, token}}
+          value={{ loginUser, registerUser, user, token}}
         >
           {children}
         </UserContext.Provider>
