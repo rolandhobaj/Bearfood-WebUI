@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import { Card, IconButton, InputAdornment, InputLabel, OutlinedInput } from '@mui/material';
 import { Box, FormControl } from '@mui/material';
-import exampleImage from '../assets/icon.png'
+import bearfoodImage from '../assets/icon.png'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link } from 'react-router-dom';
@@ -27,7 +27,7 @@ function LoginForm(){
     return (
         <Box sx={boxStyle}>
         <Card sx={cardStyle}>
-        <img src={exampleImage} alt="Example" width='180' height='auto'/>
+        <img src={bearfoodImage} alt="Bearfood" width='180' height='auto'/>
 
         <Stack>
             <TextField className='TextField' id="outlined-basic" label="Email" required variant="outlined" sx={textFieldStyles}
