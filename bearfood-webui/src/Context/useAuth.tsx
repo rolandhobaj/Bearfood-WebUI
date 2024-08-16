@@ -9,6 +9,7 @@ type UserContextType = {
     loginUser: (username: string, password: string, onError: () => void) => void;
     registerUser: (username: string, password: string, fullName : string, onError: () => void) => void;
     isLoggedIn: () => boolean;
+    logout: () => void;
 }
 
 type Props = { children: React.ReactNode };
@@ -58,10 +59,17 @@ export const UserProvider = ({ children }: Props) => {
       }
 
       const isLoggedIn = () => user !== null;
+
+      const logout = () => {
+        navigate("/");
+        setToken(null);
+        setUser(null);
+        localStorage.clear();
+      }
     
       return (
         <UserContext.Provider
-          value={{ loginUser, registerUser, user, token, isLoggedIn}}
+          value={{ loginUser, registerUser, user, token, isLoggedIn, logout}}
         >
           {children}
         </UserContext.Provider>
