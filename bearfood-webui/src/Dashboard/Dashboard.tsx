@@ -1,6 +1,7 @@
-import {Button, Stack, Card, Box} from '@mui/material';
+import {Button, Stack, Box} from '@mui/material';
 import { useAuth } from '../Context/useAuth';
 import bearfoodImage from '../assets/icon-transparent.png'
+import RecipeList from './RecipeList';
 
 export default function Dashboard(){
     var {logout, user} = useAuth();
@@ -19,9 +20,9 @@ export default function Dashboard(){
             </Button>
             </Stack>
         </Box>
-        <Box sx={boxStyle}>
-        <Stack>
-       
+        <Box sx={contentBoxStyle}>
+        <Stack direction='row' justifyContent='left'>
+            <RecipeList/>
             <p>A lot of things</p>
         </Stack>
         </Box>
@@ -41,17 +42,10 @@ const headerStyle = {
     padding: `5px`,
 };
   
-const cardStyle = {
+const contentBoxStyle = {
     display: 'flex',
     flexDirection: 'column',
     width : '95%',
-    height: '90%',
+    height: '80vh',
     padding: '20px'
-};
-
-const boxStyle = {
-    height: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
 };
