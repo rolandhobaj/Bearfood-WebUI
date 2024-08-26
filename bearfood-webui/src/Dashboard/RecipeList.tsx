@@ -6,7 +6,7 @@ import Filter from './Filter';
 
 export default function RecipeList(){
     const [recipeNames, setRecipeNames] = useState<string[]>([]);
-    const { filterText } = useStore();
+    const { filterText, select } = useStore();
 
     useEffect(() => {
         getAllRecipe(() => console.log("error"))
@@ -20,12 +20,12 @@ export default function RecipeList(){
             <Filter/>
             <List sx={listStyle}>
                 {recipeNames.filter(s => s.toLowerCase().startsWith(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
-                    <ListItem key={index} onClick={() => console.log("Clicked")} disablePadding sx={{
+                    <ListItem key={index} disablePadding sx={{
                         '&:hover': {
                             backgroundColor: 'rgb(56, 85, 89, 0.4)',
                         }
                     }}>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => select(recipe)}>
                             <ListItemText primary={recipe} />
                         </ListItemButton>
                     </ListItem>

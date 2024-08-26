@@ -2,9 +2,12 @@ import {Button, Stack, Box} from '@mui/material';
 import { useAuth } from '../Context/useAuth';
 import bearfoodImage from '../assets/icon-transparent.png'
 import RecipeList from './RecipeList';
+import { useStore } from '../Context/useStore';
+import SelectedRecipe from './SelectedRecipe';
 
 export default function Dashboard(){
     var {logout, user} = useAuth();
+    var { selectedRecipe } = useStore();
     return (
         <div>
         <Box sx={headerStyle}>
@@ -21,9 +24,9 @@ export default function Dashboard(){
             </Stack>
         </Box>
         <Box sx={contentBoxStyle}>
-        <Stack direction='row' justifyContent='left'>
+        <Stack direction='row' justifyContent='space-between'>
             <RecipeList/>
-            <p>A lot of things</p>
+            {selectedRecipe ? <SelectedRecipe/> : null}
         </Stack>
         </Box>
         </div>
