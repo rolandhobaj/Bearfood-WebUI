@@ -1,11 +1,12 @@
 import {Card, List, ListItem, ListItemText} from '@mui/material';
 import { useEffect, useState } from 'react';
-
+import { useStore } from '../Context/useStore';
 import { getAllRecipe } from "./Service";
 import Filter from './Filter';
 
 export default function RecipeList(){
     const [recipeNames, setRecipeNames] = useState<string[]>([]);
+    const { filterText } = useStore();
 
     useEffect(() => {
         getAllRecipe(() => console.log("error"))
@@ -18,7 +19,7 @@ export default function RecipeList(){
         <Card sx={contentBoxStyle}>
             <Filter/>
             <List sx={listStyle}>
-                {recipeNames.map((recipe, index) => (
+                {recipeNames.filter(s => s.toLowerCase().startsWith(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
                     <ListItem key={index}>
                         <ListItemText primary={recipe} />
                     </ListItem>
