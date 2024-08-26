@@ -1,4 +1,4 @@
-import {Card, List, ListItem, ListItemText} from '@mui/material';
+import {Card, List, ListItem, ListItemButton, ListItemText} from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useStore } from '../Context/useStore';
 import { getAllRecipe } from "./Service";
@@ -20,8 +20,14 @@ export default function RecipeList(){
             <Filter/>
             <List sx={listStyle}>
                 {recipeNames.filter(s => s.toLowerCase().startsWith(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
-                    <ListItem key={index}>
-                        <ListItemText primary={recipe} />
+                    <ListItem key={index} onClick={() => console.log("Clicked")} disablePadding sx={{
+                        '&:hover': {
+                            backgroundColor: 'rgb(56, 85, 89, 0.4)',
+                        }
+                    }}>
+                        <ListItemButton>
+                            <ListItemText primary={recipe} />
+                        </ListItemButton>
                     </ListItem>
                 ))}
             </List>
