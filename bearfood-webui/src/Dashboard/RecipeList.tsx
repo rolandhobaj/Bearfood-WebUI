@@ -11,8 +11,12 @@ export default function RecipeList(){
     useEffect(() => {
         getAllRecipe(() => console.log("error"))
         .then(recipes => {
-            setRecipeNames(recipes.map(r => r.title).sort());
-        });
+            var sortedRecipes = recipes.map(r => r.title).sort();
+            setRecipeNames(sortedRecipes);
+            if (sortedRecipes.length != 0){
+                select(sortedRecipes[0]);
+            }
+        })
     }, []);
 
     return (
