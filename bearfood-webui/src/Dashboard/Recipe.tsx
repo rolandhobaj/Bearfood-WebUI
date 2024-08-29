@@ -1,4 +1,4 @@
-export type RecipeDto = {
+export type Recipe = {
     id: string;
     imageUri: string;
     tags: string;

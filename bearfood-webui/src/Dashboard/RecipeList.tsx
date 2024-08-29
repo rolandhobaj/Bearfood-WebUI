@@ -3,18 +3,18 @@ import { useEffect, useState } from 'react';
 import { useStore } from '../Context/useStore';
 import { getAllRecipe } from "./Service";
 import Filter from './Filter';
+import { Recipe } from './Recipe';
 
 export default function RecipeList(){
-    const [recipeNames, setRecipeNames] = useState<string[]>([]);
+    const [recipes, setRecipes] = useState<Recipe[]>([]);
     const { filterText, selectedRecipe, select } = useStore();
 
     useEffect(() => {
         getAllRecipe(() => console.log("error"))
         .then(recipes => {
-            var sortedRecipes = recipes.map(r => r.title).sort();
-            setRecipeNames(sortedRecipes);
-            if (sortedRecipes.length != 0){
-                select(sortedRecipes[0]);
+            setRecipes(recipes.sort((a, b) => a.title.localeCompare(b.title)));
+            if (recipes.length != 0){
+                select(recipes[0]);
             }
         })
     }, []);
@@ -23,7 +23,7 @@ export default function RecipeList(){
         <Card sx={contentBoxStyle}>
             <Filter/>
             <List sx={listStyle}>
-                {recipeNames.filter(s => s.toLowerCase().includes(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
+                {recipes.filter(s => s.title.toLowerCase().includes(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
                     <ListItem key={index} disablePadding sx={{
                         bgcolor: recipe == selectedRecipe ? 'rgb(56, 85, 89, 0.4)' : 'white',
                         '&:hover': {
@@ -31,7 +31,7 @@ export default function RecipeList(){
                         }
                     }}>
                         <ListItemButton onClick={() => select(recipe)}>
-                            <ListItemText primary={recipe} />
+                            <ListItemText primary={recipe.title} />
                         </ListItemButton>
                     </ListItem>
                 ))}

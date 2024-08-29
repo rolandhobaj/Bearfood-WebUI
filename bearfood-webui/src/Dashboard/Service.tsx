@@ -1,4 +1,4 @@
-import { RecipeDto } from "./Recipe";
+import { Recipe } from "./Recipe";
 
 export const getAllRecipe = async (onError: () => void) => {
     try{
@@ -16,7 +16,7 @@ export const getAllRecipe = async (onError: () => void) => {
   
       const responseBody = await data.text();
       console.log(responseBody);
-      return JSON.parse(responseBody) as RecipeDto[];
+      return JSON.parse(responseBody) as Recipe[];
     } catch(error){
       console.log(error);
       onError();
