@@ -23,7 +23,7 @@ export default function RecipeList(){
         <Card sx={contentBoxStyle}>
             <Filter/>
             <List sx={listStyle}>
-                {recipeNames.filter(s => s.toLowerCase().startsWith(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
+                {recipeNames.filter(s => s.toLowerCase().includes(filterText?.toLowerCase() ?? "")).map((recipe, index) => (
                     <ListItem key={index} disablePadding sx={{
                         bgcolor: recipe == selectedRecipe ? 'rgb(56, 85, 89, 0.4)' : 'white',
                         '&:hover': {
