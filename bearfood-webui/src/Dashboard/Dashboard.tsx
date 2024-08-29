@@ -4,6 +4,7 @@ import bearfoodImage from '../assets/icon-transparent.png'
 import RecipeList from './RecipeList';
 import { useStore } from '../Context/useStore';
 import SelectedRecipe from './SelectedRecipe';
+import { Widgets } from '@mui/icons-material';
 
 export default function Dashboard(){
     var {logout, user} = useAuth();
